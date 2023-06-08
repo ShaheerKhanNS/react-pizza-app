@@ -62,28 +62,47 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
+
       {numPizzas > 0 && (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <React.Fragment>
+          <p>
+            Authentic Italian cuisine.{numPizzas} creative dishes to choose
+            from. All from our stone oven,all organic,all delecious.
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </React.Fragment>
       )}
     </main>
   );
 }
-function Pizza(props) {
+function Pizza({ pizzaObj }) {
+  if (pizzaObj.soldOut) return null;
+
   return (
     <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}></img>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name}></img>
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>${props.pizzaObj.price}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>${pizzaObj.price}</span>
       </div>
     </li>
   );
 }
+
+function Order({ closeHour }) {
+  return (
+    <div className="order">
+      <p>We are open until {closeHour}.Come Visit us or order online.</p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
+
 function Footer() {
   // return React.createElement("footer", null, `We are currently open`);
 
@@ -97,12 +116,7 @@ function Footer() {
 
   return (
     <footer className="footer">
-      {isOpen && (
-        <div className="order">
-          <p>We are open until {closeHour}.Come Visit us or order online.</p>
-          <button className="btn">Order</button>
-        </div>
-      )}
+      {isOpen && <Order closeHour={closeHour} />}
     </footer>
   );
 }
